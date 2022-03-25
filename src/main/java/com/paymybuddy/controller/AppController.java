@@ -111,13 +111,16 @@ public class AppController {
 	}
 
 	@PostMapping("/process_add_connection")
-	public String addConnection(String email) {
+	public ModelAndView addConnection(String email) {
 		try {
 			LOGGER.info("begin addConnection");
 
 			userService.addUserTo(email);
 			
-			return "connections_form";
+			RedirectView redirectView = new RedirectView();
+			redirectView.setUrl("/private/connections");
+			return new ModelAndView(redirectView);
+			
 
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
@@ -185,6 +188,7 @@ public class AppController {
 			LOGGER.info("begin updateBankAccount");
 
 			bankAccountService.update(bankAccount,userService.getLoggedUser());
+			
 			RedirectView redirectView = new RedirectView();
 			redirectView.setUrl("/private/profile");
 			return new ModelAndView(redirectView);
